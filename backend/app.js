@@ -18,7 +18,6 @@ app.use(cors({
 
 app.use(express.json());
 app.use(morgan(process.env.NODE_ENV));
-console.log("process.env",process.env.PORT);
 app.use(session({
   secret: process.env.SECRET_KEY , 
   saveUninitialized: true,
