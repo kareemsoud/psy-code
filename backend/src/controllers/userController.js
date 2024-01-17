@@ -1,10 +1,19 @@
 const UserService = require('../services/userService');
-
+const mockUsers = [
+  { email: 'test.e1@example.com', name: 'John Doe', phone: '123-456-7890' },
+  { email: 'test.e2@example.com', name: 'Jane Doe', phone: '' },
+];
+  function initializeUsers(session) {
+  if (!session.users) {
+    console.log('Initializing session with mock data');
+    session.users = [...mockUsers];
+  }
+  
+}
 exports.addUser = (req, res) => {
   try {
-    UserService.initializeUsers(req.session); 
+    initializeUsers(req.session); 
     const newUser = UserService.addUser(req.session, req.body);
-    res.set('Cache-Control', 'no-store');
 
     res.status(201).json(newUser);
   } catch (error) {
@@ -15,12 +24,16 @@ exports.addUser = (req, res) => {
 };
 
 exports.getAllUsers = (req, res) => {
-  UserService.initializeUsers(req.session); 
-  res.set('Cache-Control', 'no-store');
+  try {
+    initializeUsers(req.session); 
 
-  const users = UserService.getAllUsers(req.session);
-  res.status(200).json(users);
+    const users = UserService.getAllUsers(req.session);
+    res.status(200).json(users);
+  
+    
+  } catch (error) {
+    res.status(500).json({ message: error.message });
 
-
+  }
 
 };

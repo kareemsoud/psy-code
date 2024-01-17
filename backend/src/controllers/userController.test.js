@@ -11,7 +11,6 @@ app.use('/api/users', userRouter);
 
 describe('User Controller', () => {
   beforeEach(() => {
-    UserService.initializeUsers.mockReset();
     UserService.addUser.mockReset();
     UserService.getAllUsers.mockReset();
   });
